@@ -34,6 +34,7 @@ alias ...="cd ../../"
 alias ....="cd ../../../"
 alias .....="cd ../../../../"
 alias bin="cd ~/bin"
+alias code="cd ~/Code"
 alias mcd="mkcdir"
 
 alias caps2esc="setxkbmap -option caps:escape"
