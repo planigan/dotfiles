@@ -1,0 +1,2 @@
+#!/bin/sh
+feh  --bg-scale '/home/patrick/Pictures/splash_of_colors-1920x1080.jpg' 

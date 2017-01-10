@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# USAGE: ./splitcsv <FILE> <LINES PER FILE> <FILE PREFIX>
+if [ "$#" -ne 3 ]; then
+  echo "Usage: `basename $0` <FILE> <LINES PER OUTPUT FILE> <OUTPUT PREFIX>"
+  echo
+  echo "   eg: `basename $0` example.csv 1000 example_"
+  exit
+fi
+
+tail -n +2 $1 | split -d --additional-suffix .csv -l $2 - $3
+for file in $3*
+do
+    head -n 1 $1 > tmp_file
+    cat $file >> tmp_file
+    mv -f tmp_file $file
+done
