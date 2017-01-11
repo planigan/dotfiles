@@ -93,6 +93,8 @@ let g:jsx_pragma_required = 0 " allow vim-jsx to run on .js files
 set number
 set tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
 set cursorline " highlight the line the cursor is on
+set colorcolumn=80
+set scrolloff=10 " start scrolling 10 lines from the bottom of the screen
 "set autowrite " writes file when changing buffers
 set hidden " supresses needing to use ! to switch buffers without a write
 
