@@ -64,6 +64,8 @@ filetype plugin indent on
 
 let mapleader = " "
 
+" Default sh syntax to bash
+let g:is_bash=1
 " setup invisible chars
 set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
 
