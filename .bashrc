@@ -73,16 +73,6 @@ CYAN="$(tput setaf 6)"
 WHITE="$(tput setaf 7)"
 CLEAR="$(tput sgr0)"
 
-git_status_prompt() {
-  # From: https://makandracards.com/makandra/1090-customize-your-bash-prompt
-  # Needed to break/clean it up:
-  [[ $(git status 2> /dev/null) =~ Changes\ to\ be\ committed: ]] && STATUS="$YELLOW" || STATUS="$RED"
-
-  [[ ! $(git status 2> /dev/null) =~ nothing\ to\ commit,\ working\ .+\ clean ]] || STATUS="$GREEN"
-
-  echo "$BLUE$(__git_ps1 "[$STATUS %s $BLUE]")$CLEAR"
-}
-
 exit_status_prompt() {
   if [ $? = 0 ]; then echo "$GREEN ✔ "; else echo "$RED ✘ "; fi
 }
@@ -90,20 +80,14 @@ exit_status_prompt() {
 # Cobbled together from:
 # http://stackoverflow.com/a/6592668/6058262
 # https://github.com/l0b0/tilde/blob/master/.bashrc
-# But this still breaks Crtl-r after a failed exit status
 PROMPT_COMMAND=set_prompt
 set_prompt() {
-  PS1="\$(exit_status_prompt)"
-  PS1+="$BLUE[$YELLOW\j$BLUE]$CLEAR"
-  PS1+="${debian_chroot:+($debian_chroot)}"
-  PS1+="$RED[$GREEN\T$RED]$CLEAR"
-  PS1+="$RED[$YELLOW\u$RED@$BLUE\h:$YELLOW\w$RED]\n$CLEAR"
-  GIT_STATUS="\$(git_status_prompt)"
-  PS1+="$GIT_STATUS$YELLOW λ $CLEAR"
-  #PS1+='$(tput cup "$(($LINES - 1)) $((${#GIT_STATUS} + 3))" )'
   [ -n "$TMUX_PANE" ] && \
     tmux set-environment TMUX_"$(echo $TMUX_PANE | sed 's/%//g')"_PATH $(pwd)
 }
+if [ -f ~/.bash_prompt ]; then
+  . ~/.bash_prompt
+fi
 # END MY MODS
 
 else
