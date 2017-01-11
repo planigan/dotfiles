@@ -193,9 +193,10 @@ export HISTSIZE=10000
 # append to bash_history if Terminal.app quits
 shopt -s histappend
 
-#if [ -f $HOME/bin/z.sh ]; then
-  #. $HOME/bin/z.sh
-#fi
+# Enable fuzzy path completion with z
+if [ -f $HOME/bin/z.sh ]; then
+  . $HOME/bin/z.sh
+fi
 
 export NVM_DIR="/home/patrick/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
