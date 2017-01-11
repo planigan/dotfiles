@@ -85,6 +85,16 @@ set_prompt() {
   [ -n "$TMUX_PANE" ] && \
     tmux set-environment TMUX_"$(echo $TMUX_PANE | sed 's/%//g')"_PATH $(pwd)
 }
+
+# Last piece of the puzzle to fix how tmux opens new windows in physical
+# path rather than symlink path.
+# From: http://stackoverflow.com/a/33077475/6058262
+neww=$(tmux show-environment NEWW 2> /dev/null | sed 's/^[^=]*=//')
+if [ "$neww" != "-NEWW" ] && [ "$neww" != "" ] ; then
+    cd "$neww"
+fi
+tmux set-environment -r NEWW
+
 if [ -f ~/.bash_prompt ]; then
   . ~/.bash_prompt
 fi
@@ -136,15 +146,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
-
-# Last piece of the puzzle to fix how tmux opens new windows in physical
-# path rather than symlink path.
-# From: http://stackoverflow.com/a/33077475/6058262
-neww=$(tmux show-environment NEWW 2> /dev/null | sed 's/^[^=]*=//')
-if [ "$neww" != "-NEWW" ] && [ "$neww" != "" ] ; then
-    cd "$neww"
-fi
-tmux set-environment -r NEWW
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
