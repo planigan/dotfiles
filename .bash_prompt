@@ -28,9 +28,9 @@ COLOR_LIGHTCYAN=$(tput sgr0 && tput setaf 6 && tput bold)
 
 COLOR_RESET=$(tput sgr0)
 
-if [ -z "`echo $(hg prompt \"abort\" 2>&1) | grep abort`" ]; then
-    echo "hg-prompt not installed. Suggest http://sjl.bitbucket.org/hg-prompt/installation/"
-fi
+#if [ -z "`echo $(hg prompt \"abort\" 2>&1) | grep abort`" ]; then
+    #echo "hg-prompt not installed. Suggest http://sjl.bitbucket.org/hg-prompt/installation/"
+#fi
 
 _hg_dir=""
 function _hg_check {
