@@ -184,7 +184,7 @@ endif
 let g:gist_clip_command = 'xclip -selection clipboard' " Linux copy
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
-let g:gist_use_password_in_gitconfig = 1
+let g:gist_use_password_in_gitconfig = 0
 
 " https://github.com/colbycheeze/dotfiles/blob/master/vimrc
 " Toggle relative numbering, and set to absolute on loss of focus or insert mode
