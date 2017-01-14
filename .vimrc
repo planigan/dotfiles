@@ -9,6 +9,7 @@ Plugin 'ctrlpvim/ctrlp.vim' " fuzzy find files with CTRL-P
 Plugin 'jlanzarotta/bufexplorer' " buffers with <leader>be bt bs or bv
 Plugin 'scrooloose/nerdtree' " file drawer, open with :NERDTreeToggle
 Plugin 'Xuyuanp/nerdtree-git-plugin' " git integration for nerdtree
+Plugin 'airblade/vim-gitgutter' " ]c = next change, [c = previous change
 Plugin 'tpope/vim-fugitive' " the ultimate git helper
 Plugin 'tpope/vim-commentary' " comment/uncomment lines with gcc or gc in visual mode
 Plugin 'lfilho/cosco.vim' " Adds ; at end of line with <leader>;
@@ -16,6 +17,7 @@ Plugin 'ervandew/supertab' " Makes tab work with autocomplete and ultrasnips
 Plugin 'Shougo/deoplete.nvim' " async autocomplete with tern
 Plugin 'ternjs/tern_for_vim', {'do': 'npm install'} " code intelligence for JS
 Plugin 'editorconfig/editorconfig-vim'
+Plugin 'vim-syntastic/syntastic.git' " linting
 
 " tmux pluggins
 Plugin 'benmills/vimux'
@@ -113,6 +115,39 @@ let g:airline_theme = 'dark'
 let g:airline#extension#tmuxline#enabled = 0
 ":Tmuxline airline_visual
 let g:tmuxline_theme = 'airline_visual'
+
+" Configure syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_loc_list_height = 3
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_enable_signs = 1
+"let g:syntastic_javascript_checkers = ['eslint']
+
+" From: https://github.com/vim-syntastic/syntastic/issues/1110#issuecomment-147960425
+function! HasConfig(file, dir)
+    return findfile(a:file, escape(a:dir, ' ') . ';') !=# ''
+endfunction
+
+autocmd BufNewFile,BufReadPre *.js  let b:syntastic_checkers =
+    \ HasConfig('.eslintrc', expand('<amatch>:h')) ? ['eslint'] :
+    \ HasConfig('.jshintrc', expand('<amatch>:h')) ? ['jshint'] :
+    \     ['eslint']
+
+let g:syntastic_error_symbol = '❌'
+let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_style_warning_symbol = '💩'
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
 
 " Configure ultisnips
 " From: https://github.com/SirVer/ultisnips/issues/376
