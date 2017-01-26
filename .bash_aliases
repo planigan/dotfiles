@@ -2,6 +2,7 @@
 shopt -s expand_aliases
 
 alias a="alias"
+alias grep="grep --color"
 alias ag="alias_grep"
 alias func="function_grep"
 alias hgrep="history_grep"
@@ -62,6 +63,7 @@ alias acsw="find_package_strict"
 alias agu="sudo apt-get update"
 alias agdu="sudo apt-get dist-upgrade"
 alias acp="apt-cache policy"
+alias packages="confirm 'This will take a while. Are you sure? [y/N]' && dpkg -l | awk '/^ii/ {system(\"apt-cache policy \" $2)}' > ~/packages"
 alias isinstalled="acp"
 
 alias tma="tmux attach -t"
@@ -71,6 +73,35 @@ alias tmn="tmux new -s"
 
 alias handbrake="ghb %f"
 alias docs="zeal"
+
+# Use to confirm aliases
+# Found: http://stackoverflow.com/a/3232082/6058262
+confirm() {
+  # call with a prompt string or use a default
+  read -r -p "${1:-Are you sure? [y/N]} " response
+  case "$response" in
+    [yY][eE][sS]|[yY])
+      true
+      ;;
+    *)
+      false
+      ;;
+  esac
+}
+
+# Autogenerate git aliases from .gitconfig aliases and setup completion
+# From: https://gist.github.com/mwhite/6887990
+function_exists() {
+  declare -f -F $1 > /dev/null
+  return $?
+}
+export GIT_ALIASES_TEST=$( __git_aliases )
+for al in $( __git_aliases ); do
+  alias g$al="git $al"
+
+  complete_func="_git_$(__git_aliased_command $al)"
+  function_exists $complete_fnc && __git_complete g$al $complete_func
+done
 
 # Grep aliases with a single command
 alias_grep() {

@@ -1,6 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
+export LOGIN_CONFIG_ORDER=".bashrc > ${LOGIN_CONFIG_ORDER}"
 
 # If not running interactively, don't do anything
 case $- in
@@ -143,11 +144,6 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -170,21 +166,6 @@ if [ -f ~/bin/hub-linux/etc/hub.bash_completion.sh ]; then
   . ~/bin/hub-linux/etc/hub.bash_completion.sh
 fi
 
-
-# Autogenerate git aliases from .gitconfig aliases and setup completion
-# From: https://gist.github.com/mwhite/6887990
-function_exists() {
-  declare -f -F $1 > /dev/null
-  return $?
-}
-
-for al in `__git_aliases`; do
-  alias g$al="git $al"
-
-  complete_func=_git_$(__git_aliased_command $al)
-  function_exists $complete_fnc && __git_complete g$al $complete_func
-done
-
 # history handling
 #
 # Erase duplicates
@@ -195,23 +176,45 @@ export HISTSIZE=10000
 shopt -s histappend
 
 # Enable fuzzy path completion with z
-if [ -f $HOME/bin/z.sh ]; then
-  . $HOME/bin/z.sh
+if [ -f "$HOME/bin/z.sh" ]; then
+  . "$HOME/bin/z.sh"
 fi
 
-export NVM_DIR="/home/patrick/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-[[ -r $NVM_DIR/bash_completion ]] && . $NVM_DIR/bash_completion
+export NVM_DIR="$HOME/.nvm"
+if [[ ! $PATH =~ $NVM_DIR ]]; then
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+  [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+fi
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-[[ -s "/home/patrick/.gvm/scripts/gvm" ]] && source "/home/patrick/.gvm/scripts/gvm"
+if [[ -s "$HOME/.gvm/scripts/gvm" && ! $PATH =~ $HOME/.gvm/bin ]]; then
+  source "$HOME/.gvm/scripts/gvm"
+  export GOPATH="$HOME/workspace"
+  export PATH="$PATH:$GOPATH/bin"
+fi
 
-export GOPATH="/home/patrick/workspace"
-export PATH="$PATH:$GOPATH/bin"
+if [[ -d "$HOME/bin" && ! $PATH =~ $HOME/bin ]]; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+if [[ ! $PATH =~ $HOME/.rvm/bin ]]; then
+  export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+fi
+
 
 # Base16-shell additions
 # https://github.com/chriskempson/base16-shell
 BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
+
+# Alias definitions.
+# I moved the bash_alias sourcing to the end because I was having an issue
+# where the automatic git aliases from ~/.gitconfig were not being generated
+# during a normal gnome-terminal opening, while tmux sessions continued to work
+# and sourcing the .bashrc aplied the aliases. I temporarily set a variable to
+# $( __git_aliases ) and it was empty when I echoed it after opening a terminal.
+# TODO: investigate further... at some point... maybe
+if [ -f ~/.bash_aliases ]; then
+  . ~/.bash_aliases
+fi

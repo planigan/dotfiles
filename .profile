@@ -8,6 +8,7 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+export LOGIN_CONFIG_ORDER=".profile > ${LOGIN_CONFIG_ORDER}"
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -16,13 +17,12 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+#export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
+#if [ -d "$HOME/bin" ] ; then
+  #PATH="$HOME/bin:$PATH"
+#fi
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-SOURCING="${SOURCING}Sourcing .profile. PATH is now:\n $PATH \n\n"
