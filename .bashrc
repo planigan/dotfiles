@@ -23,6 +23,9 @@ HISTFILESIZE=20000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# Disable the dang flow control that locks things up when I fat finger C-s
+stty -ixon
+
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
@@ -85,7 +88,7 @@ exit_status_prompt() {
 PROMPT_COMMAND=set_prompt
 set_prompt() {
   [ -n "$TMUX_PANE" ] && \
-    tmux set-environment TMUX_"$(echo $TMUX_PANE | sed 's/%//g')"_PATH $(pwd)
+    tmux set-environment TMUX_"$(echo $TMUX_PANE | sed 's/%//g')"_PATH "$(pwd)"
 }
 
 # Last piece of the puzzle to fix how tmux opens new windows in physical
@@ -117,8 +120,8 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-#if [ -x /usr/bin/dircolors ]; then
-    #test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     #alias ls='ls --color=auto'
     ##alias dir='dir --color=auto'
     ##alias vdir='vdir --color=auto'
@@ -126,7 +129,7 @@ esac
     #alias grep='grep --color=auto'
     #alias fgrep='fgrep --color=auto'
     #alias egrep='egrep --color=auto'
-#fi
+fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
