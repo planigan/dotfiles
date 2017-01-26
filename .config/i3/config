@@ -232,4 +232,10 @@
 # xrandr --output VGA-0 --mode 1920x1080 --pos 0x0 --rotate normal --output DVI-0 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-0 --off
 
 
-
+# Autostart stuff
+  # Set caps lock to be a super key
+  exec setxkbmap -option caps:super
+  # Make the caps lock key send escape if not held over 200ms
+  exec xcape -t 200 -e 'Super_L=Escape' &
+  exec dropbox start
+  exec redshift-gtk &
