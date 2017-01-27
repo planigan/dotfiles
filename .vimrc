@@ -129,6 +129,7 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_enable_signs = 1
 "let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_sh_checkers = ['shellcheck']
+let g:syntastic_ruby_checkers = ['rubocop']
 
 " From: https://github.com/vim-syntastic/syntastic/issues/1110#issuecomment-147960425
 function! HasConfig(file, dir)
