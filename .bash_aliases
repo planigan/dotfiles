@@ -45,6 +45,8 @@ alias caps2super="setxkbmap -option caps:super"
 
 alias mac="ssh planigan@10.0.0.3"
 
+alias emacs="emacs -nw"
+alias emc="emacs ~/.spacemacs"
 alias aa="vi ~/.bash_aliases"
 alias brc="vi ~/.bashrc"
 alias tmc="vi ~/.tmux.conf"
@@ -53,7 +55,9 @@ alias grc="vi ~/.gitconfig"
 alias i3c="vi ~/.config/i3/config"
 alias i3b="vi ~/.config/i3/i3blocks.conf"
 alias dun="vi ~/.config/dunst/dunstrc"
-alias s="source ~/.bashrc && tmux source-file ~/.tmux.conf"
+alias s="source ~/.bashrc && echo 'Reloaded .bashrc' && [ -n \"$TMUX\" ] && tmux source-file ~/.tmux.conf && echo 'Reloaded .tmux.conf'"
+
+alias csv_without_header="tail -n +2"
 
 alias npmlg="npm list -g --depth=0"
 
