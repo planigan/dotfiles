@@ -1,14 +1,17 @@
 #!/usr/bin/env ruby
 
-if ARGV.length != 2 then
-  puts "usage: #{File.basename($0)} <list_file> <exclude_file> > list_without_excludes"
+COMMAND = File.basename($PROGRAM_NAME)
+
+if ARGV.length != 2
+  puts "usage: #{COMMAND} <list_file> <exclude_file> > list_without_excludes"
   puts
-  puts "e.g. #{File.basename($0)} emails.csv sent_email.csv > unsent_emails.csv"
+  puts "e.g. #{COMMAND} emails.csv sent_email.csv > unsent_emails.csv"
   puts
-  puts "NOTE: If you leave the CSV header in the second file, it will get filtered."
-  puts "      TIP: tail -n +2 > file_without_header.csv"
-  puts "      Also, this program assumes that the two files have the same format."
-  puts "      We are only excluding lines that match exactly."
+  puts 'NOTE:'
+  puts '  If you leave the CSV header in the second file, it will get filtered.'
+  puts '  TIP: tail -n +2 > file_without_header.csv'
+  puts '  Also, this program assumes that the two files have the same format.'
+  puts '  We are only excluding lines that match exactly.'
   exit
 end
 
