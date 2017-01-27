@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+if ARGV.length != 2 then
+  puts "usage: #{File.basename($0)} <list_file> <exclude_file> > list_without_excludes"
+  puts
+  puts "e.g. #{File.basename($0)} emails.csv sent_email.csv > unsent_emails.csv"
+  puts
+  puts "NOTE: If you leave the CSV header in the second file, it will get filtered."
+  puts "      TIP: tail -n +2 > file_without_header.csv"
+  puts "      Also, this program assumes that the two files have the same format."
+  puts "      We are only excluding lines that match exactly."
+  exit
+end
+
+FILTER_FILE = ARGV[0]
+EXCLUDE_FILE = ARGV[1]
+
+puts File.readlines(FILTER_FILE) - File.readlines(EXCLUDE_FILE)
