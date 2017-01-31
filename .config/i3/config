@@ -60,6 +60,7 @@
   assign [title="PatrickLanigan’s Music Profile — Users at Last.fm - Google Chrome"] $workspace10
   assign [title=".*Google Play Music.*"] $workspace10
   assign [class="google-chrome" instance="google-chrome"] $workspace2
+  assign [class="chromium-browser" instance="chromium-browser"] $workspace2
   assign [class="Firefox"] $workspace1
   assign [class="Gimp"] $workspace9
 
