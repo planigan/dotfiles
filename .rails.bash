@@ -177,7 +177,7 @@ _rails_new(){
 }
 
 _rails_plugin(){
-  if [[ -f "script/rails" ]]; then
+  if [[ -f "bin/rails" ]]; then
     __railscomp "--help --verbose --root= install remove"
   else
     __railscomp "new"
@@ -308,7 +308,7 @@ _rails(){
   _get_comp_words_by_ref cur
 
   options="--help --version"
-  if [[ -f "script/rails" ]]; then
+  if [[ -f "bin/rails" ]]; then
     commands="s server c console g generate d destroy r runner profiler plugin benchmarker db dbconsole"
   else
     commands="new plugin"
