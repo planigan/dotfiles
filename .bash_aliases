@@ -43,9 +43,9 @@ alias caps2super="setxkbmap -option caps:super"
 #alias caps2caps="setxkbmap -option caps:caps" tried capsLock also, didn't work
 # need to figure out how to do this for ctrl
 
-alias mac="ssh planigan@10.0.0.3"
+alias mac="ssh patrick@10.0.0.23"
 
-alias emacs="emacs -nw"
+alias emacs="emacsclient -nw --insecure --alternate-editor=''"
 alias emc="emacs ~/.spacemacs"
 alias aa="vi ~/.bash_aliases"
 alias brc="vi ~/.bashrc"
@@ -67,7 +67,7 @@ alias acsw="find_package_strict"
 alias agu="sudo apt-get update"
 alias agdu="sudo apt-get dist-upgrade"
 alias acp="apt-cache policy"
-alias packages="confirm 'This will take a while. Are you sure? [y/N]' && dpkg -l | awk '/^ii/ {system(\"apt-cache policy \" $2)}' > ~/packages"
+alias packages="confirm 'This will take a while. Are you sure? [y/N]' && dpkg -l | awk '/^ii/ {system(\"apt-cache policy \" $2)}' > ~/packages && alert 'Package file complete' && espeak 'package file complete'"
 alias isinstalled="acp"
 
 alias tma="tmux attach -t"
