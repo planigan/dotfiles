@@ -201,6 +201,10 @@ if [[ ! $PATH =~ $HOME/.rvm/bin ]]; then
   export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 fi
 
+# From: https://github.com/jweslley/rails_completion
+# Source rails completion
+[[ -f "$HOME/.rails.bash" ]] && source "$HOME/.rails.bash"
+
 
 # Base16-shell additions
 # https://github.com/chriskempson/base16-shell
