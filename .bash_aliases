@@ -45,7 +45,7 @@ alias caps2super="setxkbmap -option caps:super"
 
 alias mac="ssh patrick@10.0.0.23"
 
-alias emacs="emacsclient -nw --insecure --alternate-editor=''"
+alias emacs="emacsclient -nw --alternate-editor=''"
 alias emc="emacs ~/.spacemacs"
 alias aa="vi ~/.bash_aliases"
 alias brc="vi ~/.bashrc"
