@@ -240,3 +240,4 @@
   exec xcape -t 200 -e 'Super_L=Escape' &
   exec dropbox start
   exec redshift-gtk &
+  exec emacs --daemon $
