@@ -248,7 +248,11 @@ autocmd FileType javascript,css inoremap <silent> <Leader>; <c-o>:call cosco#com
 nnoremap ; :
 nnoremap <leader>; :!
 
+" match the file save of spacemacs
+nnoremap <leader>fs :w<cr>
+
 " stop reaching for esc
+inoremap fd <esc>
 inoremap jj <esc>
 
 " copy to system clipboard
