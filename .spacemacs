@@ -44,6 +44,7 @@ values."
      org
      pandoc
      deft
+     ranger
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -55,6 +56,7 @@ values."
      ;; vim-powerline
      emoji
      html
+     colors
      markdown
      javascript
      react
@@ -62,6 +64,7 @@ values."
      ruby-on-rails
      yaml
      go
+     sql
      vimscript
      )
    ;; List of additional packages that will be installed without being
@@ -322,12 +325,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
 
+  ;; Trying to get scrolloff type behavior
+  (setq scroll-conservatively 101
+        scroll-margin 7
+        scroll-preserve-screen-position 't)
+
   ;; Key Bindings
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
 
   ;; Web-mode config
   ;; See: http://web-mode.org/
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.sass\\'" . web-mode))
+  ;; (setq web-mode-content-types-alist
+  ;;       '(("scss" . "\\.sass\\'"))
+  ;; )
   (setq web-mode-extra-auto-pairs
         '(("erb"  . (("beg" "end")))
           ("php"  . (("beg" "end")
@@ -337,6 +349,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq web-mode-enable-auto-closing t)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
+  (setq web-mode-enable-css-colorization t)
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-enable-css-colorization t)
   (setq web-mode-enable-current-element-highlight t)
@@ -345,6 +358,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
         '(("erb" . (("a" . "<%= link_to | %>"))
          ))
   )
+
+  ;; Colors
+  (setq-default dotspacemacs-configuration-layers '(
+     (colors :variables colors-colorize-identifiers 'all)))  
 
   ;; Org mode config
   (setq org-src-fontify-natively t) ;; Syntax highlight source code blocks
@@ -367,6 +384,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; see https://www.gnu.org/software/emacs/manual/html_node/elisp/Creating-Frames.html
   (add-hook 'after-make-frame-functions '--set-emoji-font)
 
+  ;; Lighten up line numbers in spacemacs theme
+  ;; Why isn't this working?!?!?!?!
+  (custom-set-variables '(spacemacs-theme-custom-colors
+                          '((lnum . "#ff0000"))))
+
   ;; Open things in chrome instead of firefox
   (setq browse-url-browser-function 'browse-url-generic
         engine/browser-function 'browse-url-generic
@@ -388,15 +410,3 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:background nil)))))
