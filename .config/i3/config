@@ -240,5 +240,5 @@
   exec xcape -t 200 -e 'Super_L=Escape' &
   exec --no-startup-id dropbox start
   exec --no-startup-id redshift-gtk &
-  exec --no-startup-id command emacs --daemon --insecure &
+  exec --no-startup-id command emacs --daemon=gui --insecure &
   exec --no-startup-id command emacs --daemon=terminal --insecure &
