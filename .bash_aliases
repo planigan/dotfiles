@@ -1,9 +1,12 @@
 # make aliases work in vim
-shopt -s expand_aliases
+[[ $0 == *bash ]] && shopt -s expand_aliases
+[[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]] && setopt aliases
 
 alias a="alias"
-alias grep="grep --color"
-alias ag="alias_grep"
+alias grep="ag --color"
+# alias grep="grep --color"
+alias less="less -r" # colorize less always
+alias aag="alias_grep"
 alias func="function_grep"
 alias hgrep="history_grep"
 alias f="declare -f"
@@ -15,13 +18,16 @@ alias c="pygmentize -O style=monokai -f console256 -g"
 alias cn="pyg"
 alias monoff="sleep 1; xset dpms force off"
 alias j="jobs"
-alias hist="history 10"
+alias fg="fg %" # Make zsh act like bash where fg 2 restores job 2
+alias bg="bg %" # Make zsh act like bash where bg 2 restores job 2
+alias hist="fc -l -10"
 alias tree="tree -I '.git|bower_components|node_modules' --dirsfirst"
 alias open="xdg-open"
 alias disks='echo "╓───── m o u n t . p o i n t s"; echo "╙────────────────────────────────────── ─ ─ "; lsblk -a; echo ""; echo "╓───── d i s k . u s a g e"; echo "╙────────────────────────────────────── ─ ─ "; df -h;'
 alias toiletlist='for i in ${TOILET_FONT_PATH:=/usr/share/figlet}/*.{t,f}lf; do j=${i##*/}; echo ""; echo "╓───── "$j; echo "╙────────────────────────────────────── ─ ─ "; echo ""; toilet -d "${i%/*}" -f "$j" "${j%.*}"; done'
 
 
+alias shrug="xclip ~/Dropbox/shrug.txt"
 alias weather="curl -4 wttr.in"
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias clbin="curl -F 'clbin=<-' https://clbin.com"
@@ -45,17 +51,18 @@ alias caps2super="setxkbmap -option caps:super"
 
 alias mac="ssh patrick@10.0.0.23"
 
-alias emacs="emacsclient -nw --alternate-editor=''"
-alias emc="emacs ~/.spacemacs"
+alias ec="emacsclient -nw --alternate-editor='' -s terminal"
+alias emc="ec ~/.spacemacs"
+alias vi="vim"
 alias aa="vi ~/.bash_aliases"
 alias brc="vi ~/.bashrc"
+alias zrc="vi ~/.zshrc"
 alias tmc="vi ~/.tmux.conf"
 alias vrc="vi ~/.vimrc"
 alias grc="vi ~/.gitconfig"
 alias i3c="vi ~/.config/i3/config"
 alias i3b="vi ~/.config/i3/i3blocks.conf"
 alias dun="vi ~/.config/dunst/dunstrc"
-alias s="source ~/.bashrc && echo 'Reloaded .bashrc' && [ -n \"$TMUX\" ] && tmux source-file ~/.tmux.conf && echo 'Reloaded .tmux.conf'"
 
 alias csv_without_header="tail -n +2"
 
@@ -65,7 +72,8 @@ alias agi="sudo apt-get install"
 alias acs="apt-cache search"
 alias acsw="find_package_strict"
 alias agu="sudo apt-get update"
-alias agug="sudo apt-get upgrade"
+alias agug="sudo apt-get upgrade && ~/bin/reboot-notifier.sh"
+alias agugs="sudo apt-get upgrade -s"
 alias agdu="sudo apt-get dist-upgrade"
 alias agclean="echo 'apt-get autoclean...' && sudo apt-get autoclean && echo '' && echo 'apt-get autoremove...' && sudo apt-get autoremove"
 alias acp="apt-cache policy"
@@ -79,6 +87,15 @@ alias tmn="tmux new -s"
 
 alias handbrake="ghb %f"
 alias docs="zeal"
+
+
+#alias s="source ~/.bashrc && echo 'Reloaded .bashrc' && [ -n \"$TMUX\" ] && tmux source-file ~/.tmux.conf && echo 'Reloaded .tmux.conf'"
+alias s='src_configs'
+src_configs() {
+  [[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]]&& [ -f ~/.zshrc ] && source ~/.zshrc && echo 'Reloaded .zshrc...'
+  [[ $0 == *bash ]] && [ -f ~/.bashrc ] && source ~/.bashrc && echo 'Reloaded .bashrc...'
+  [ -n "$TMUX" ] && [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf && echo 'Reloaded .tmux.conf...'
+}
 
 # Use to confirm aliases
 # Found: http://stackoverflow.com/a/3232082/6058262
@@ -142,7 +159,7 @@ pyg() {
 
 # colorized less
 cl() {
-  pygmentize -O style=monokai -f console256 -g $1 | less -r
+  pygmentize -O style=monokai -f console256 -g $1 | less
 }
 
 # Colorize man pages
@@ -204,14 +221,26 @@ function unmark {
 function marks {
   ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
 }
-_completemarks() {
-  local curw=${COMP_WORDS[COMP_CWORD]}
-  local wordlist=$(find $MARKPATH -type l -printf "%f\n")
-  COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
-  return 0
-}
 
-complete -F _completemarks jump unmark
+if [[ $0 == *bash ]]; then
+    _completemarks() {
+    local curw=${COMP_WORDS[COMP_CWORD]}
+    local wordlist=$(find $MARKPATH -type l -printf "%f\n")
+    COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+    return 0
+  }
+
+  complete -F _completemarks jump unmark
+fi
+
+if [[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]]; then
+  function _completemarks {
+    reply=($(ls $MARKPATH))
+  }
+
+  compctl -K _completemarks jump
+  compctl -K _completemarks unmark
+fi
 
 
 eval $(thefuck --alias)
