@@ -180,27 +180,6 @@ if [ -f "$HOME/bin/z.sh" ]; then
   . "$HOME/bin/z.sh"
 fi
 
-export NVM_DIR="$HOME/.nvm"
-if [[ ! $PATH =~ $NVM_DIR ]]; then
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-  [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
-fi
-
-
-if [[ -s "$HOME/.gvm/scripts/gvm" && ! $PATH =~ $HOME/.gvm/bin ]]; then
-  source "$HOME/.gvm/scripts/gvm"
-  export GOPATH="$HOME/workspace"
-  export PATH="$PATH:$GOPATH/bin"
-fi
-
-if [[ -d "$HOME/bin" && ! $PATH =~ $HOME/bin ]]; then
-  PATH="$HOME/bin:$PATH"
-fi
-
-if [[ ! $PATH =~ $HOME/.rvm/bin ]]; then
-  export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-fi
-
 # From: https://github.com/jweslley/rails_completion
 # Source rails completion
 [[ -f "$HOME/.rails.bash" ]] && source "$HOME/.rails.bash"

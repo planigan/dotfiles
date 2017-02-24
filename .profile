@@ -9,6 +9,28 @@
 #umask 022
 
 export LOGIN_CONFIG_ORDER=".profile > ${LOGIN_CONFIG_ORDER}"
+
+export NVM_DIR="$HOME/.nvm"
+if [[ ! $PATH =~ $NVM_DIR ]]; then
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+  [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
+fi
+
+
+if [[ -s "$HOME/.gvm/scripts/gvm" && ! $PATH =~ $HOME/.gvm/bin ]]; then
+  source "$HOME/.gvm/scripts/gvm"
+  export GOPATH="$HOME/workspace"
+  export PATH="$PATH:$GOPATH/bin"
+fi
+
+if [[ -d "$HOME/bin" && ! $PATH =~ $HOME/bin ]]; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+if [[ ! $PATH =~ $HOME/.rvm/bin ]]; then
+  export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+fi
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
