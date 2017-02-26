@@ -11,7 +11,8 @@
   set $bg-image /home/patrick/Pictures/splash_of_colors-1920x1080.jpg
   set $font SFNS Display 10
   set $icon-font FontAwesome 10
-  set $i3blocks-font DejaVu Sans Mono 10
+  #set $i3blocks-font DejaVu Sans Mono 10
+  set $i3blocks-font InconsolataForPowerline Nerd Font 11
 
   # Colors
   set $base00 #101218
@@ -70,6 +71,9 @@
   for_window [class="Pavucontrol"] floating enable
   for_window [title="^Developer Tools - .*"] floating enable
   for_window [class="Gnome-software"] floating enable
+  for_window [class="DB Browser for SQLite"] floating enable
+  for_window [title="^patrick\@figment-PC.*"] floating disable, border none
+  for_window [title="^emacs\@figment-PC.*"] floating disable, border none
 
 # Auto Layouts
   exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/patrick/.config/i3/workspace-chrome.json'"
@@ -173,6 +177,10 @@
 # resize window
   bindsym $mod+r mode "   "
   mode "   " {
+    bindsym Shift+h resize shrink width 5 px or 5 ppt
+    bindsym Shift+j resize grow height 5 px or 5 ppt
+    bindsym Shift+k resize shrink height 5 px or 5 ppt
+    bindsym Shift+l resize grow width 5 px or 5 ppt
     bindsym h resize shrink width 10 px or 10 ppt
     bindsym j resize grow height 10 px or 10 ppt
     bindsym k resize shrink height 10 px or 10 ppt
