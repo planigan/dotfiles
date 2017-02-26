@@ -1,4 +1,4 @@
-;
+;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
@@ -30,22 +30,24 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
-     ;; ----------------------------------------------------------------
+   '( ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-snippets-in-popup t)
      better-defaults
      emacs-lisp
      git
      org
      pandoc
      deft
-     ranger
+     (ranger :variables ranger-show-preview t)
      (shell :variables
+            shell-default-shell 'ansi-term
+            shell-default-term-shell "/bin/bash"
             shell-default-height 30
             shell-default-position 'bottom)
      spell-checking
@@ -53,6 +55,7 @@ values."
      version-control
      github
      themes-megapack
+     theming
      ;; vim-powerline
      emoji
      html
@@ -60,13 +63,24 @@ values."
      markdown
      javascript
      react
-     ruby
+     (ruby :variables
+           ruby-version-manager 'rvm
+           ;;ruby-enable-enh-ruby-mode t
+           )
      ruby-on-rails
      yaml
      go
      sql
      vimscript
-     )
+     osx
+
+     ;; OS conditional layers
+     ;; ,@(when (string= system-type "darwin")
+     ;; ((if (eq system-type 'darwin)
+           ;; '(osx
+             ;; (shell :variables shell-default-shell 'ansi-term shell-default-term-shell "/bin/zsh")
+             ;; )))
+ )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -74,7 +88,7 @@ values."
    dotspacemacs-additional-packages
    '(
      editorconfig
-    )
+     )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -110,7 +124,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update nil
+   dotspacemacs-check-for-update t
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
@@ -190,7 +204,7 @@ values."
    dotspacemacs-retain-visual-state-on-shift t
    ;; If non-nil, J and K move lines up and down when in visual mode.
    ;; (default nil)
-   dotspacemacs-visual-line-move-text nil
+   dotspacemacs-visual-line-move-text t
    ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
@@ -274,7 +288,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -291,7 +305,7 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
@@ -305,7 +319,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'trailing
    ))
 
 (defun dotspacemacs/user-init ()
@@ -325,13 +339,23 @@ before packages are loaded. If you are unsure, you should try in setting them in
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
 
-  ;; Trying to get scrolloff type behavior
+  ;; Keybindings
+  (evil-define-key 'insert global-map (kbd "<C-return>") 'evil-open-below)
+  (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+
+  ;; Set the escape sequence to ignore order
+  (setq evil-escape-unordered-key-sequence t) (setq evil-escape-delay 0.04)
+
+  ;; Scrolloff type behavior
   (setq scroll-conservatively 101
         scroll-margin 7
         scroll-preserve-screen-position 't)
 
-  ;; Key Bindings
-  (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+  ;; Fix projectile-rails in erb, etc
+  ;; This isn't working for me on master. Rather replacing line 30 in the
+  ;; framework/ruby-on-rails/package.el file enables it.
+  ;; (dolist (mode '(ruby-mode enh-ruby-mode slim-mode haml-mode coffee-mode web-mode js-mode yaml-mode))
+  (projectile-rails-global-mode)
 
   ;; Web-mode config
   ;; See: http://web-mode.org/
@@ -359,10 +383,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
          ))
   )
 
-  ;; Colors
-  (setq-default dotspacemacs-configuration-layers '(
-     (colors :variables colors-colorize-identifiers 'all)))  
-
   ;; Org mode config
   (setq org-src-fontify-natively t) ;; Syntax highlight source code blocks
 
@@ -385,9 +405,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'after-make-frame-functions '--set-emoji-font)
 
   ;; Lighten up line numbers in spacemacs theme
-  ;; Why isn't this working?!?!?!?!
-  (custom-set-variables '(spacemacs-theme-custom-colors
-                          '((lnum . "#ff0000"))))
+  ;; I got this working through the spacemacs-theme by moving the custom-set-variables
+  ;; to the proper place down below.
+  ;; (setq theming-modifications '((spacemacs-dark (linum :foreground "#666666")
+  ;;                                               (linum-relative-current-face :foreground "#d75fd7"))))
 
   ;; Open things in chrome instead of firefox
   (setq browse-url-browser-function 'browse-url-generic
@@ -410,3 +431,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+;; Lighten up line numbers in spacemacs theme
+(custom-set-variables '(spacemacs-theme-custom-colors
+                        '((lnum . "#666666"))))
