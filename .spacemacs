@@ -72,6 +72,16 @@ values."
      go
      sql
      vimscript
+     (erc :variables
+          erc-server-list
+          '(("irc.freenode.net"
+             :port "6697"
+             :ssl t
+             :nick "planigan")
+            ("irc.gitter.im"
+             :port "6667"
+             :ssl t
+             :nick "planigan")))
      osx
 
      ;; OS conditional layers
@@ -343,7 +353,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (evil-define-key 'insert global-map (kbd "<C-return>") 'evil-open-below)
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
 
-  ;; Set the escape sequence to ignore order
+  ;; gpg settings
+  (setq epg-gpg-program "/usr/bin/gpg2")
+
+  ;; Set the escape sequence (fd) to ignore order
   (setq evil-escape-unordered-key-sequence t) (setq evil-escape-delay 0.04)
 
   ;; Scrolloff type behavior
@@ -353,7 +366,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   ;; Fix projectile-rails in erb, etc
   ;; This isn't working for me on master. Rather replacing line 30 in the
-  ;; framework/ruby-on-rails/package.el file enables it.
+  ;; framework/ruby-on-rails/package.el file with the following enables it.
   ;; (dolist (mode '(ruby-mode enh-ruby-mode slim-mode haml-mode coffee-mode web-mode js-mode yaml-mode))
   (projectile-rails-global-mode)
 
@@ -383,8 +396,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
          ))
   )
 
+  ;; ERC config
+  (erc-track-mode t)
+  (setq erc-hide-list '("JOIN" "NICK" "PART" "QUIT"))
+  (setq erc-autojoin-channels-alist
+        '(("freenode.net" "#emacs" "#emacs-beginners" "#ruby" "#rubyonrails"
+           "##javascript" "#node.js" "#reactjs" "#git" "#bash" )
+          ("irc.gitter.im" "#syl20bnr/spacemacs")))
+  (setq erc-prompt-for-nickserv-password nil)
+
   ;; Org mode config
-  (setq org-src-fontify-natively t) ;; Syntax highlight source code blocks
+  (with-eval-after-load 'org
+    (add-to-list 'org-babel-load-languages
+                 '(ruby . t)
+                 '(js . t))
+    (setq org-src-fontify-natively t)) ;; Syntax highlight source code blocks
 
   ;; Set deft to use Dropbox
   (setq deft-directory "~/Dropbox/notes")
@@ -413,7 +439,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; Open things in chrome instead of firefox
   (setq browse-url-browser-function 'browse-url-generic
         engine/browser-function 'browse-url-generic
-        browse-url-generic-program "google-chrome")
+        ;; browse-url-generic-program "google-chrome")
+        browse-url-generic-program "chromium-browser")
 
   ;; Make mouse scrolling work in terminal
   (unless window-system
