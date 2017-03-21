@@ -1,0 +1,15 @@
+rofi.color-enabled:   true
+rofi.modi:            run,drun,ssh
+rofi.width:           100
+rofi.lines:           3
+rofi.font:            SFNS Display 10
+rofi.bw:              0
+rofi.padding:         800
+rofi.eh:              2
+rofi.separator-style: solid
+!                  bg       fg    bg-alt   hl-bg    hl-fg
+rofi.color-normal: argb:001f222d, #ffffff, argb:001f222d, #1f222d, #ff0000
+rofi.color-urgent: argb:001f222d, #ffffff, argb:001f222d, #1f222d, #ff0000
+rofi.color-active: argb:001f222d, #ffffff, argb:001f222d, #1f222d, #ff0000
+!                  bg             fg       separator
+rofi.color-window: argb:aa1f222d, #aaaaaa, argb:00aaaaa

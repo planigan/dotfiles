@@ -53,30 +53,17 @@
   set $monitor1 HDMI-0 # Not in use
   set $monitor2 VGA-0 # Monitor with bulging caps, connected but off
 
-# Note: class, instance, window_role, and title can be used and found using xprop
-#       WM_CLASS(STRING) = instance, class
-#       WM_WINDOW_ROLE(STRING) =  window_role
-#       _NET_WM_NAME(UTF8_STRING) = title
-# assign applications to workspaces
-  assign [title="PatrickLanigan’s Music Profile — Users at Last.fm - Google Chrome"] $workspace10
-  assign [title=".*Google Play Music.*"] $workspace10
-  assign [class="google-chrome" instance="google-chrome"] $workspace2
-  assign [class="chromium-browser" instance="chromium-browser"] $workspace2
-  assign [class="Firefox"] $workspace1
-  assign [class="Gimp"] $workspace9
-
-# Floating Windows
-  for_window [class="Lxappearance"] floating enable
-  for_window [class="Keepassx"] floating enable
-  for_window [class="Pavucontrol"] floating enable
-  for_window [title="^Developer Tools - .*"] floating enable
-  for_window [class="Gnome-software"] floating enable
-  for_window [class="DB Browser for SQLite"] floating enable
-  for_window [title="^patrick\@figment-PC.*"] floating disable, border none
-  for_window [title="^emacs\@figment-PC.*"] floating disable, border none
-
-# Auto Layouts
-  exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/patrick/.config/i3/workspace-chrome.json'"
+  # Assign workspaces to monitors (all to working monitor for now)
+  workspace $workspace1 output $monitor0
+  workspace $workspace2 output $monitor0
+  workspace $workspace3 output $monitor0
+  workspace $workspace4 output $monitor0
+  workspace $workspace5 output $monitor0
+  workspace $workspace6 output $monitor0
+  workspace $workspace7 output $monitor0
+  workspace $workspace8 output $monitor0
+  workspace $workspace9 output $monitor0
+  workspace $workspace10 output $monitor0
 
 # Use Mouse+$mod to drag floating windows to their wanted position
   floating_modifier $mod
@@ -88,7 +75,8 @@
   bindsym $mod+Shift+q kill
 
 # start rofi (a program launcher)
-  bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 480 -opacity "85" -bw 0 -bc "$base01" -bg "$base01" -fg "$base07" -hlbg "$base01" -hlfg "red" -font "$font"
+  bindsym $mod+Shift+d exec --no-startup-id rofi -show drun
+  bindsym $mod+d exec --no-startup-id rofi -show run
 
 # Compositor
   exec_always compton -f --config ~/.config/compton.conf
@@ -116,6 +104,10 @@
   bindsym $mod+Shift+Down move down
   bindsym $mod+Shift+Up move up
   bindsym $mod+Shift+Right move right
+
+# move workspace between monitors
+bindsym $mod+m move workspace to output left
+bindsym $mod+Shift+m move workspace to output right
 
 # split bindings
   bindsym $mod+- split h
@@ -241,12 +233,48 @@
 # xrandr --output VGA-0 --mode 1920x1080 --pos 0x0 --rotate normal --output DVI-0 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output HDMI-0 --off
 
 
+# Note: class, instance, window_role, and title can be used and found using xprop
+#       WM_CLASS(STRING) = instance, class
+#       WM_WINDOW_ROLE(STRING) =  window_role
+#       _NET_WM_NAME(UTF8_STRING) = title
+# assign applications to workspaces
+  assign [title="PatrickLanigan’s Music Profile — Users at Last.fm - Google Chrome"] $workspace10
+  assign [title=".*Google Play Music.*"] $workspace10
+  assign [class="google-chrome" instance="google-chrome"] $workspace2
+  assign [class="chromium-browser" instance="chromium-browser"] $workspace2
+  assign [class="Firefox"] $workspace1
+  assign [class="Gimp"] $workspace9
+  assign [class="irssi"] $workspace8
+  assign [class="ranger"] $workspace5
+  assign [class="htop"] $workspace2
+
+# Floating Windows
+  for_window [class="Lxappearance"] floating enable
+  for_window [class="Keepassx"] floating enable
+  for_window [class="Pavucontrol"] floating enable
+  for_window [title="^Developer Tools - .*"] floating enable
+  for_window [class="gpick"] floating enable
+  for_window [class="Gnome-software"] floating enable
+  for_window [class="DB Browser for SQLite"] floating enable
+  for_window [title="^patrick\@figment-PC.*"] floating disable, border none
+  for_window [title="^emacs\@figment-PC.*"] floating disable, border none
+
+# Auto Layouts
+  # exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/patrick/.config/i3/workspace-chrome.json'"
+
 # Autostart stuff
-  # Set caps lock to be a super key
+  exec xcape -t 200 -e 'Super_L=Escape'
   exec setxkbmap -option caps:super
-  # Make the caps lock key send escape if not held over 200ms
-  exec xcape -t 200 -e 'Super_L=Escape' &
-  exec --no-startup-id dropbox start
-  exec --no-startup-id redshift-gtk &
   exec --no-startup-id command emacs --daemon=gui --insecure &
   exec --no-startup-id command emacs --daemon=terminal --insecure &
+  # Set caps lock to be a super key
+  # Make the caps lock key send escape if not held over 200ms
+  exec --no-startup-id dropbox start
+  exec --no-startup-id redshift-gtk &
+  exec --no-startup-id keepassx &
+  exec --no-startup-id i3-msg "workspace $workspace5; exec /usr/bin/nautilus"
+  exec --no-startup-id i3-msg "workspace $workspace5; exec gnome-terminal --window-with-profile=ranger --class=ranger"
+  exec --no-startup-id i3-msg "workspace $workspace2; exec google-chrome"
+  exec --no-startup-id i3-msg "workspace $workspace2; exec gnome-terminal --window-with-profile=htop --class=htop"
+  exec --no-startup-id i3-msg "workspace $workspace8; exec gnome-terminal --window-with-profile=irssi --class=irssi" &
+
