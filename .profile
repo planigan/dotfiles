@@ -10,6 +10,10 @@
 
 export LOGIN_CONFIG_ORDER=".profile > ${LOGIN_CONFIG_ORDER}"
 
+if [[ -d "$HOME/.cargo/bin" && ! $PATH =~ $HOME/.cargo/bin ]]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 export NVM_DIR="$HOME/.nvm"
 if [[ ! $PATH =~ $NVM_DIR ]]; then
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -48,3 +52,5 @@ fi
   #PATH="$HOME/bin:$PATH"
 #fi
 
+
+export GTAGSLABEL=ctags
