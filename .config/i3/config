@@ -272,6 +272,7 @@ bindsym $mod+Shift+m move workspace to output right
   exec --no-startup-id dropbox start
   exec --no-startup-id redshift-gtk &
   exec --no-startup-id keepassx &
+  exec --no-startup-id notify-listener.py &
   exec --no-startup-id i3-msg "workspace $workspace5; exec /usr/bin/nautilus"
   exec --no-startup-id i3-msg "workspace $workspace5; exec gnome-terminal --window-with-profile=ranger --class=ranger"
   exec --no-startup-id i3-msg "workspace $workspace2; exec google-chrome"
