@@ -43,6 +43,7 @@ alias .....="cd ../../../../"
 alias bin="cd ~/bin"
 alias code="cd ~/Code"
 alias mcd="mkcdir"
+alias conf="cd ~/.config"
 
 alias caps2esc="setxkbmap -option caps:escape"
 alias caps2super="setxkbmap -option caps:super"
@@ -75,7 +76,7 @@ alias agu="sudo apt-get update"
 alias agug="sudo apt-get upgrade && ~/bin/reboot-notifier.sh"
 alias agugs="sudo apt-get upgrade -s"
 alias agdu="sudo apt-get dist-upgrade"
-alias agclean="echo 'apt-get autoclean...' && sudo apt-get autoclean && echo '' && echo 'apt-get autoremove...' && sudo apt-get autoremove"
+alias agclean="echo 'apt-get autoclean...' && sudo apt-get autoclean && echo '' && echo 'apt-get autoremove...' && sudo apt-get autoremove && echo; echo 'apt-get clean...' && sudo apt-get clean && echo; echo 'Done cleaning'"
 alias acp="apt-cache policy"
 alias packages="confirm 'This will take a while. Are you sure? [y/N]' && dpkg -l | awk '/^ii/ {system(\"apt-cache policy \" $2)}' > ~/packages && alert 'Package file complete' && espeak 'package file complete'"
 alias isinstalled="acp"
@@ -88,6 +89,10 @@ alias tmn="tmux new -s"
 alias handbrake="ghb %f"
 alias docs="zeal"
 
+broken_links() {
+  local search_path="$1" || "/"
+  find "$search_path" -type l -exec test ! -e {} \; -print 2> /dev/null
+}
 
 #alias s="source ~/.bashrc && echo 'Reloaded .bashrc' && [ -n \"$TMUX\" ] && tmux source-file ~/.tmux.conf && echo 'Reloaded .tmux.conf'"
 alias s='src_configs'
@@ -95,6 +100,11 @@ src_configs() {
   [[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]]&& [ -f ~/.zshrc ] && source ~/.zshrc && echo 'Reloaded .zshrc...'
   [[ $0 == *bash ]] && [ -f ~/.bashrc ] && source ~/.bashrc && echo 'Reloaded .bashrc...'
   [ -n "$TMUX" ] && [ -f ~/.tmux.conf ] && tmux source-file ~/.tmux.conf && echo 'Reloaded .tmux.conf...'
+}
+
+kill_on_port() {
+  [[ $# -ne 1 ]] && echo "Need to pass port number as an argument."
+  [[ $# -eq 1 ]] && kill -9 $(lsof -t -i:$1 -sTCP:LISTEN)
 }
 
 # Use to confirm aliases
