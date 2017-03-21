@@ -30,7 +30,9 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '( ;; ----------------------------------------------------------------
+   '(
+     python
+     octave ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
@@ -41,6 +43,7 @@ values."
      better-defaults
      emacs-lisp
      git
+     github
      org
      pandoc
      deft
@@ -68,6 +71,7 @@ values."
            ;;ruby-enable-enh-ruby-mode t
            )
      ruby-on-rails
+     (gtags :variables gtags-enable-by-default t)
      yaml
      go
      sql
@@ -82,7 +86,7 @@ values."
              :port "6667"
              :ssl t
              :nick "planigan")))
-     osx
+     ;;osx
 
      ;; OS conditional layers
      ;; ,@(when (string= system-type "darwin")
@@ -98,6 +102,10 @@ values."
    dotspacemacs-additional-packages
    '(
      editorconfig
+     react-snippets
+     nodejs-repl
+     all-the-icons
+     (all-the-icons-dired :location (recipe :fetcher github :repo "jtbm37/all-the-icons-dired"))
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -170,7 +178,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(atom-one-dark
+                         spacemacs-dark
+                         railscasts
                          base16-codeschool
                          monokai
                          pastels-on-dark
@@ -227,7 +237,7 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts nil
+   dotspacemacs-auto-resume-layouts t
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -349,15 +359,62 @@ before packages are loaded. If you are unsure, you should try in setting them in
   explicitly specified that a variable should be set before a package is loaded,
   you should place your code here."
 
+  ;; Custom functions
+  (defun jpl/insert-date-time ()
+    (interactive)
+    (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
+
+  ;; https://github.com/syl20bnr/spacemacs/issues/8438#issuecomment-283610751
+  (defun jpl/message-add-timestamp (args)
+    (let ((format-string (car args))
+          (substitutaions (cdr args)))
+      (if (or (null format-string) (string= format-string ""))
+          ;; nil or empty format-string is meant to clear the echo area instead of
+          ;; logging a message, so don't modify args in this case
+          args
+        (cons (concat (format-time-string "[%T] " (current-time)) (car args))
+              (cdr args)))))
+
+  ;; (advice-add 'message :filter-args #'jpl/message-add-timestamp)
+  ;; (advice-remove 'message :filter-args #'message-add-timestamp)
+
   ;; Keybindings
+
+  ;; C-RET in insert mode will break out of line and start a new line
   (evil-define-key 'insert global-map (kbd "<C-return>") 'evil-open-below)
   (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+  (spacemacs/declare-prefix "o" "personal-keybindings")  ;; Set up label in which-key
+  (spacemacs/declare-prefix "oi" "insert-bindings")      ;; Set up label in which-key
+  (spacemacs/declare-prefix "on" "node-bindings")        ;; Set up label in which-key
+  (spacemacs/set-leader-keys "oit" 'jpl/insert-date-time)
+  ;; See: https://github.com/syl20bnr/spacemacs/issues/483#issuecomment-269593566
+  (spacemacs/set-leader-keys "onr" 'nodejs-repl-send-region)
+
+  ;; Require additional packages
+
+  ;; Fonts for all-the-icons to work:
+  ;; https://github.com/domtronn/all-the-icons.el/blob/master/fonts
+  (require 'all-the-icons)
+  (setq neo-theme 'icons)
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+  (require 'react-snippets) ;; move this to lazy-load in a js-mode hook?
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode 1))
+  (use-package magithub
+    :after magit
+    :config (magithub-feature-autoinject t))
+
 
   ;; gpg settings
   (setq epg-gpg-program "/usr/bin/gpg2")
 
   ;; Set the escape sequence (fd) to ignore order
   (setq evil-escape-unordered-key-sequence t) (setq evil-escape-delay 0.04)
+
+  ;; Start with menu-bar open
+  (spacemacs/toggle-menu-bar-on)
 
   ;; Scrolloff type behavior
   (setq scroll-conservatively 101
@@ -382,13 +439,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
           ("php"  . (("beg" "end")
                      ("beg" "end")))
           ))
+  (setq web-mode-auto-quote-style 2) ;; use single quotes
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-auto-closing t)
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-enable-css-colorization t)
   (setq web-mode-code-indent-offset 2)
-  (setq web-mode-enable-css-colorization t)
   (setq web-mode-enable-current-element-highlight t)
   (setq web-mode-enable-current-column-highlight t)
   (setq web-mode-extra-snippets
@@ -454,6 +511,36 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (set-face-attribute 'spaceline-evil-visual nil :foreground "black")
     (set-face-attribute 'spaceline-evil-replace nil :foreground "black")
   )
+
+  ;; @quickner and @jredville from gitter
+  ;; open marked files from helm-projectile in open windows
+  ;; if you mark more than the number of open windows, the extras open in buffers
+  (defun helm-open-buffers-in-windows (buffers)
+    (if (= (length buffers) 1) (set-window-buffer nil (car buffers))
+      (let ((cur-win 1)
+             (num-windows (length (window-list))))
+        (cl-loop for buffer in buffers
+          do (when (<= cur-win num-windows)
+               (set-window-buffer (winum-get-window-by-number cur-win) buffer)
+               (setq cur-win (+ cur-win 1)))))))
+
+  (defun helm-find-files-windows (candidate)
+    (let* ((files (helm-marked-candidates))
+            (buffers (mapcar 'find-file-noselect files)))
+      (helm-open-buffers-in-windows buffers)))
+
+  (defun helm-find-buffers-windows (candidate)
+    (let* ((buffers (helm-marked-candidates)))
+      (helm-open-buffers-in-windows buffers)))
+
+  ;; C-z to see actions in helm-projectile
+  (with-eval-after-load 'helm-projectile
+    (helm-add-action-to-source "Open marked files in windows" 'helm-find-files-windows helm-source-projectile-files-list)
+    (helm-add-action-to-source "Open marked buffers in windows" 'helm-find-buffers-windows helm-source-projectile-buffers-list))
+
+  (define-key helm-projectile-find-file-map (kbd "C-w")
+    (lambda ()(interactive)
+      (helm-exit-and-execute-action 'helm-find-files-windows)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
