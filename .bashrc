@@ -3,6 +3,10 @@
 # for examples
 export LOGIN_CONFIG_ORDER=".bashrc > ${LOGIN_CONFIG_ORDER}"
 
+# gpg-agent environment setting
+GPG_TTY=$(tty)
+export GPG_TTY
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
