@@ -74,6 +74,9 @@
 # kill focused window
   bindsym $mod+Shift+q kill
 
+# kill current song
+  bindsym $mod+p exec pkill mpg321
+
 # start rofi (a program launcher)
   bindsym $mod+Shift+d exec --no-startup-id rofi -show drun
   bindsym $mod+d exec --no-startup-id rofi -show run
@@ -258,6 +261,7 @@ bindsym $mod+Shift+m move workspace to output right
   for_window [class="DB Browser for SQLite"] floating enable
   for_window [title="^patrick\@figment-PC.*"] floating disable, border none
   for_window [title="^emacs\@figment-PC.*"] floating disable, border none
+  for_window [title="Terminal"] floating disable, border none
 
 # Auto Layouts
   # exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/patrick/.config/i3/workspace-chrome.json'"
@@ -265,8 +269,8 @@ bindsym $mod+Shift+m move workspace to output right
 # Autostart stuff
   exec xcape -t 200 -e 'Super_L=Escape'
   exec setxkbmap -option caps:super
-  exec --no-startup-id command emacs --daemon=gui --insecure &
-  exec --no-startup-id command emacs --daemon=terminal --insecure &
+  exec --no-startup-id command emacs25 --daemon=gui --insecure &
+  exec --no-startup-id command emacs25 --daemon=terminal --insecure &
   # Set caps lock to be a super key
   # Make the caps lock key send escape if not held over 200ms
   exec --no-startup-id dropbox start
@@ -279,3 +283,4 @@ bindsym $mod+Shift+m move workspace to output right
   exec --no-startup-id i3-msg "workspace $workspace2; exec gnome-terminal --window-with-profile=htop --class=htop"
   exec --no-startup-id i3-msg "workspace $workspace8; exec gnome-terminal --window-with-profile=irssi --class=irssi" &
 
+  exec --no-startup-id nm-applet
