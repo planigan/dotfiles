@@ -15,10 +15,10 @@ if [[ -d "$HOME/.cargo/bin" && ! $PATH =~ $HOME/.cargo/bin ]]; then
 fi
 
 export NVM_DIR="$HOME/.nvm"
-if [[ ! $PATH =~ $NVM_DIR ]]; then
+#if [[ ! $PATH =~ $NVM_DIR ]]; then
   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
   [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
-fi
+#fi
 
 
 if [[ -s "$HOME/.gvm/scripts/gvm" && ! $PATH =~ $HOME/.gvm/bin ]]; then
@@ -28,7 +28,11 @@ if [[ -s "$HOME/.gvm/scripts/gvm" && ! $PATH =~ $HOME/.gvm/bin ]]; then
 fi
 
 if [[ -d "$HOME/bin" && ! $PATH =~ $HOME/bin ]]; then
-  PATH="$HOME/bin:$PATH"
+  export PATH="$HOME/bin:$PATH"
+fi
+
+if [[ -d "$HOME/.local/bin" && ! $PATH =~ $HOME/.local/bin ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
 fi
 
 if [[ ! $PATH =~ $HOME/.rvm/bin ]]; then
