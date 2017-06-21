@@ -1,3 +1,5 @@
+# -*- mode: sh; -*-
+
 # make aliases work in vim
 [[ $0 == *bash ]] && shopt -s expand_aliases
 [[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]] && setopt aliases
@@ -32,7 +34,8 @@ alias weather="curl -4 wttr.in"
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias clbin="curl -F 'clbin=<-' https://clbin.com"
 
-alias git=hub
+# alias git=hub
+eval "$(hub alias -s)"
 
 alias b="cd -"
 alias h="cd ~"
@@ -89,6 +92,15 @@ alias tmn="tmux new -s"
 alias handbrake="ghb %f"
 alias docs="zeal"
 
+cpufreq_watch() {
+  while true :
+  do
+    clear
+    cpufreq-info | grep 'current cpu frequency is' | awk '{ print $5 " " $6; }'
+    sleep 1
+  done
+}
+
 broken_links() {
   local search_path="$1" || "/"
   find "$search_path" -type l -exec test ! -e {} \; -print 2> /dev/null
@@ -120,6 +132,10 @@ confirm() {
       false
       ;;
   esac
+}
+
+song_json_search() {
+  grep "$1" -C 2 ~/Code/the-sixtyone-reverse/songs.json
 }
 
 # Autogenerate git aliases from .gitconfig aliases and setup completion
