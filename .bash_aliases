@@ -45,6 +45,7 @@ alias ....="cd ../../../"
 alias .....="cd ../../../../"
 alias bin="cd ~/bin"
 alias code="cd ~/Code"
+alias p5="cd ~/Code/p5"
 alias mcd="mkcdir"
 alias conf="cd ~/.config"
 
