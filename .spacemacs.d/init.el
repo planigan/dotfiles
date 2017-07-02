@@ -442,6 +442,16 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; See: https://github.com/syl20bnr/spacemacs/issues/483#issuecomment-269593566
   (spacemacs/set-leader-keys "onr" 'nodejs-repl-send-region)
 
+  ;; From: https://github.com/syl20bnr/spacemacs/issues/2719#issuecomment-310917138
+  (defun toggle-search-pattern-highlight ()
+    "Toggle the previous search patterns highlight On or Off."
+    (interactive)
+    (if (evil-ex-hl-active-p 'evil-ex-search)
+      (evil-ex-nohighlight)
+      (evil-ex-search-activate-highlight evil-ex-search-pattern)))
+
+  (global-set-key (kbd "<f8>") 'toggle-search-pattern-highlight)
+
   ;; Require additional packages
 
   ;; Fonts for all-the-icons to work:
