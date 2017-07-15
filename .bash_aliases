@@ -1,9 +1,5 @@
 # -*- mode: sh; -*-
 
-# make aliases work in vim
-[[ $0 == *bash ]] && shopt -s expand_aliases
-[[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]] && setopt aliases
-
 alias a="alias"
 alias grep="ag --color"
 # alias grep="grep --color"
@@ -11,6 +7,7 @@ alias less="less -r" # colorize less always
 alias aag="alias_grep"
 alias func="function_grep"
 alias hgrep="history_grep"
+alias psg="ps_grep"
 alias f="declare -f"
 alias F="declare -F"
 alias w="whois "
@@ -28,9 +25,8 @@ alias open="xdg-open"
 alias disks='echo "╓───── m o u n t . p o i n t s"; echo "╙────────────────────────────────────── ─ ─ "; lsblk -a; echo ""; echo "╓───── d i s k . u s a g e"; echo "╙────────────────────────────────────── ─ ─ "; df -h;'
 alias toiletlist='for i in ${TOILET_FONT_PATH:=/usr/share/figlet}/*.{t,f}lf; do j=${i##*/}; echo ""; echo "╓───── "$j; echo "╙────────────────────────────────────── ─ ─ "; echo ""; toilet -d "${i%/*}" -f "$j" "${j%.*}"; done'
 
-
 alias shrug="xclip ~/Dropbox/shrug.txt"
-alias weather="curl -4 wttr.in"
+alias weather="curl -4 wttr.in/~Knoxville"
 alias sprunge="curl -F 'sprunge=<-' http://sprunge.us"
 alias clbin="curl -F 'clbin=<-' https://clbin.com"
 
@@ -58,7 +54,8 @@ alias mac="ssh patrick@10.0.0.23"
 
 alias ec="emacsclient -nw --alternate-editor='' -s terminal"
 alias emc="ec ~/.spacemacs"
-alias vi="vim"
+alias vi="nvim"
+alias vim="nvim"
 alias aa="vi ~/.bash_aliases"
 alias brc="vi ~/.bashrc"
 alias zrc="vi ~/.zshrc"
@@ -167,6 +164,10 @@ function_grep() {
 # Grep history with a single command
 history_grep() {
   history | grep "$@"
+}
+
+ps_grep() {
+  ps aux | grep "$1"
 }
 
 # Better skimming of csv files on the CLI
