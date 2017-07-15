@@ -180,9 +180,12 @@ export HISTSIZE=10000
 shopt -s histappend
 
 # Enable fuzzy path completion with z
-if [ -f "$HOME/bin/z.sh" ]; then
-  . "$HOME/bin/z.sh"
-fi
+# if [ -f "$HOME/bin/z.sh" ]; then
+#   . "$HOME/bin/z.sh"
+# fi
+
+# Setup npx auto shell fallback
+# source <(npx --shell-auto-fallback bash)
 
 # From: https://github.com/jweslley/rails_completion
 # Source rails completion
@@ -202,6 +205,10 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # and sourcing the .bashrc aplied the aliases. I temporarily set a variable to
 # $( __git_aliases ) and it was empty when I echoed it after opening a terminal.
 # TODO: investigate further... at some point... maybe
+
+# make aliases work in vim
+[[ $0 == *bash ]] && shopt -s expand_aliases
+[[ $SHELL == *zsh ]] && [[ ! $0 == *bash ]] && setopt aliases
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi

@@ -20,6 +20,11 @@ export NVM_DIR="$HOME/.nvm"
   [[ -r $NVM_DIR/bash_completion ]] && . "$NVM_DIR/bash_completion"
 #fi
 
+if [[ -d $HOME/.pyenv/bin && ! $PATH =~ $HOME/.pyenv/bin ]]; then
+  export PATH="$HOME/.pyenv/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 if [[ -s "$HOME/.gvm/scripts/gvm" && ! $PATH =~ $HOME/.gvm/bin ]]; then
   source "$HOME/.gvm/scripts/gvm"
