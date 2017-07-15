@@ -76,8 +76,10 @@ set encoding=utf-8
 "set guifont=UbuntuMono\ Nerd\ Font\ 10
 set guifont=InconsolataForPowerline\ Nerd\ Font\ 10
 
+" TODO: Figure out why this stopped working
+" I changed it from .bash_alias due to errors in nvim :CheckHealth
 " Make aliases work with :! commands
-let $BASH_ENV = "~/.bash_aliases"
+let $BASH_ENV = "~/.bashrc"
 
 "syntax enable
 "try
@@ -203,6 +205,10 @@ autocmd FocusLost * call ToggleRelativeOn()
 autocmd FocusGained * call ToggleRelativeOn()
 autocmd InsertEnter * call ToggleRelativeOn()
 autocmd InsertLeave * call ToggleRelativeOn()
+
+" python settings
+let g:python_host_prog = $HOME . '/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = $HOME . '/.pyenv/versions/neovim3/bin/python'
 
 " Mappings
 
