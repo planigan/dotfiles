@@ -194,7 +194,7 @@ It should only modify the values of Spacemacs settings."
     ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
     ;; quickly tweak the mode-line size to make separators look not too crappy.
     dotspacemacs-default-font '("Source Code Pro"
-                                 :size 13
+                                 :size 11
                                  :weight normal
                                  :width normal
                                  :powerline-scale 1.1)
@@ -434,7 +434,7 @@ before packages are loaded."
 
   ;; C-RET in insert mode will break out of line and start a new line
   (evil-define-key 'insert global-map (kbd "<C-return>") 'evil-open-below)
-  (define-key evil-normal-state-map (kbd ";") 'evil-ex)
+  (define-key evil-normal-state-map (kbd ";") 'evil-ex)  ;; remap ; to : in normal mode
   (spacemacs/declare-prefix "o" "personal-keybindings")  ;; Set up label in which-key
   (spacemacs/declare-prefix "oi" "insert-bindings")      ;; Set up label in which-key
   (spacemacs/declare-prefix "on" "node-bindings")        ;; Set up label in which-key
@@ -472,7 +472,7 @@ before packages are loaded."
   (remove-hook 'helm-mode-hook 'mode-icons-mode)
   (remove-hook 'helm-minibuffer-set-up-hook 'mode-icons-mode)
 
-  (require 'react-snippets) ;; move this to lazy-load in a js-mode hook?
+  (require 'react-snippets) ;; TODO: move this to lazy-load in a js-mode hook?
   (use-package editorconfig
     :ensure t
     :config
@@ -499,12 +499,19 @@ before packages are loaded."
 
   ;; Add mode hooks to include underscore in words rather than a word boundary
   ;; From: https://github.com/syl20bnr/spacemacs/blob/develop/doc/FAQ.org#include-underscores-in-word-motions
-  ;; For python
   (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  ;; For ruby
   (add-hook 'ruby-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  ;; For Javascript
   (add-hook 'js2-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+
+  ;; Configure prettier-js-minor mode for javascript modes
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'react-mode-hook 'prettier-js-mode)
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode)
+  (setq prettier-js-args
+    '(
+       "--trailing-comma" "all"
+       "--bracket-spacing" "true"
+       ))
 
   ;; Fix projectile-rails in erb, etc
   ;; This isn't working for me on master. Rather replacing line 30 in the
@@ -571,7 +578,7 @@ before packages are loaded."
   ;; For when Emacs is started in GUI mode:
   (--set-emoji-font nil)
   ;; Hook for when a frame is created with emacsclient
-  ;; see https://www.gnu.org/software/emacs/manual/html_node/elisp/Creating-Frames.html
+  ;; From: https://www.gnu.org/software/emacs/manual/html_node/elisp/Creating-Frames.html
   (add-hook 'after-make-frame-functions '--set-emoji-font)
 
   ;; Lighten up line numbers in spacemacs theme
