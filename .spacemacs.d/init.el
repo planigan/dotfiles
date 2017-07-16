@@ -426,7 +426,7 @@ before packages are loaded."
 
   ;; Keybindings
 
-  ;; From TheBB in: https://github.com/syl20bnr/spacemacs/issues/6971#issuecomment-308369438
+  ;; From: TheBB in: https://github.com/syl20bnr/spacemacs/issues/6971#issuecomment-308369438
   ;; Remaps J/K in rebase mode to move line down/up
   (with-eval-after-load 'git-rebase
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map "K" 'git-rebase-move-line-up)
@@ -439,7 +439,7 @@ before packages are loaded."
   (spacemacs/declare-prefix "oi" "insert-bindings")      ;; Set up label in which-key
   (spacemacs/declare-prefix "on" "node-bindings")        ;; Set up label in which-key
   (spacemacs/set-leader-keys "oit" 'jpl/insert-date-time)
-  ;; See: https://github.com/syl20bnr/spacemacs/issues/483#issuecomment-269593566
+  ;; From: https://github.com/syl20bnr/spacemacs/issues/483#issuecomment-269593566
   (spacemacs/set-leader-keys "onr" 'nodejs-repl-send-region)
 
   ;; From: https://github.com/syl20bnr/spacemacs/issues/2719#issuecomment-310917138
@@ -451,6 +451,12 @@ before packages are loaded."
       (evil-ex-search-activate-highlight evil-ex-search-pattern)))
 
   (global-set-key (kbd "<f8>") 'toggle-search-pattern-highlight)
+
+  ;; From: https://github.com/syl20bnr/spacemacs/issues/9207#issuecomment-315558541
+  (define-key evil-motion-state-map (kbd "C-e") 'evil-end-of-line)
+  (define-key evil-motion-state-map (kbd "C-a") 'evil-first-non-blank)
+  (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-visual-line)
+  (define-key evil-insert-state-map (kbd "C-a") 'evil-first-non-blank)
 
   ;; Require additional packages
 
