@@ -194,7 +194,7 @@ It should only modify the values of Spacemacs settings."
     ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
     ;; quickly tweak the mode-line size to make separators look not too crappy.
     dotspacemacs-default-font '("Source Code Pro"
-                                 :size 11
+                                 :size 10
                                  :weight normal
                                  :width normal
                                  :powerline-scale 1.1)
@@ -434,7 +434,9 @@ before packages are loaded."
 
   ;; C-RET in insert mode will break out of line and start a new line
   (evil-define-key 'insert global-map (kbd "<C-return>") 'evil-open-below)
-  (define-key evil-normal-state-map (kbd ";") 'evil-ex)  ;; remap ; to : in normal mode
+  (define-key evil-normal-state-map (kbd "C-+") 'spacemacs/scale-up-font)    ;; C-+ to increase font size
+  (define-key evil-normal-state-map (kbd "C--") 'spacemacs/scale-down-font)  ;; C-- to decrease font size
+  (define-key evil-normal-state-map (kbd ";") 'evil-ex)  ;; map ; to : in normal mode
   (spacemacs/declare-prefix "o" "personal-keybindings")  ;; Set up label in which-key
   (spacemacs/declare-prefix "oi" "insert-bindings")      ;; Set up label in which-key
   (spacemacs/declare-prefix "on" "node-bindings")        ;; Set up label in which-key
