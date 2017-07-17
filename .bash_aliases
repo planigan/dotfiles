@@ -47,6 +47,7 @@ alias conf="cd ~/.config"
 
 alias caps2esc="setxkbmap -option caps:escape"
 alias caps2super="setxkbmap -option caps:super"
+alias superTapEscape="xcape -t 200 -e 'Super_L=Escape'"
 #alias caps2caps="setxkbmap -option caps:caps" tried capsLock also, didn't work
 # need to figure out how to do this for ctrl
 
@@ -69,6 +70,8 @@ alias dun="vi ~/.config/dunst/dunstrc"
 alias csv_without_header="tail -n +2"
 
 alias npmlg="npm list -g --depth=0"
+alias nvmlsr="nvm ls-remote | tail"
+alias nodelatest="nvm ls-remote | tail -n 1"
 
 alias agi="sudo apt install"
 alias acs="apt search"
