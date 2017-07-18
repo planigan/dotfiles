@@ -18,6 +18,7 @@ Plugin 'Shougo/deoplete.nvim' " async autocomplete with tern
 Plugin 'ternjs/tern_for_vim', {'do': 'npm install'} " code intelligence for JS
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'vim-syntastic/syntastic.git' " linting
+Plugin 'JamshedVesuna/vim-markdown-preview' " Markdown previews
 
 " tmux pluggins
 Plugin 'benmills/vimux'
@@ -106,6 +107,13 @@ set hidden " supresses needing to use ! to switch buffers without a write
 " and makes airline more responsive, also seems to make nerdtree
 " more responsive to my mapping.
 set timeoutlen=500 ttimeoutlen=0
+
+" vim-markdown-preview settings
+let vim_markdown_preview_github=1
+let vim_markdown_preview_toggle=1 " preview images automatically
+let vim_markdown_preview_hotkey='<F5>'
+let vim_markdown_preview_temp_file=0 " remove temp files
+let vim_markdown_preview_use_xdg_open=1
 
 " airline settings
 let g:airline#extensions#tabline#enabled = 1
