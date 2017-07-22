@@ -1,11 +1,12 @@
 rofi.color-enabled:   true
 rofi.modi:            run,drun,ssh
-rofi.width:           100
+rofi.width:           50
 rofi.lines:           3
 rofi.font:            SFNS Display 10
 rofi.bw:              0
-rofi.padding:         800
+rofi.padding:         700
 rofi.eh:              2
+rofi.theme:           mytheme
 rofi.separator-style: solid
 !                  bg       fg    bg-alt   hl-bg    hl-fg
 rofi.color-normal: argb:001f222d, #ffffff, argb:001f222d, #1f222d, #ff0000
