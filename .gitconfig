@@ -78,9 +78,12 @@
   add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
 [core]
   excludesfile = /home/patrick/.gitignore_global
+[pager]
   # preseed pager to use n/N between patterns
   # From: https://github.com/so-fancy/diff-so-fancy#moving-around-in-the-diff
-  #pager = diff-highlight | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+  # diff-highlight ships with git, but you need to locate diff-highlight
+  # or use find. Then put a copy in your path and chmod +x
+  diff = diff-highlight | diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
 [help]
   autocorrect = 30
 [include]
