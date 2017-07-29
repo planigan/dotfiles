@@ -33,6 +33,7 @@ alias clbin="curl -F 'clbin=<-' https://clbin.com"
 
 # alias git=hub
 eval "$(hub alias -s)"
+alias fixssh="rm ~/.ssh/sockets/*"
 
 alias b="cd -"
 alias h="cd ~"
