@@ -262,12 +262,17 @@ autocmd FileType javascript,css inoremap <silent> <Leader>; <c-o>:call cosco#com
 nnoremap ; :
 nnoremap <leader>; :!
 
+" Remap Y to yank until end of line
+nnoremap Y y$
+
 " match the file save of spacemacs
 nnoremap <leader>fs :w<cr>
 
 " stop reaching for esc
-inoremap fd <esc>
-inoremap jj <esc>
+" disabling for now as i have xcape configured so that tapping
+" caps lock works as ESC now
+" inoremap fd <esc> " spacemacs style esc mapping
+" inoremap jj <esc>
 
 " copy to system clipboard
 vnoremap <C-c> "+y<cr> " Ctrl-v to paste
