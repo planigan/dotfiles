@@ -33,7 +33,7 @@ stty -ixon
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -94,6 +94,9 @@ PROMPT_COMMAND=set_prompt
 set_prompt() {
   [ -n "$TMUX_PANE" ] && \
     tmux set-environment TMUX_"$(echo $TMUX_PANE | sed 's/%//g')"_PATH "$(pwd)"
+  # append to history after every command so that history is always
+  # available across shell instances
+  history -a
 }
 
 # Last piece of the puzzle to fix how tmux opens new windows in physical
