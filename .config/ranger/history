@@ -1,0 +1,24 @@
+rename color_dust_03.png
+rename color_dust_drum
+rename color_dust_drum.png
+rename color_dust_01.png
+rename color_dust_02.png
+rename color_dust_04.png
+rename color_dust_05.png
+rename color_dust_06.png
+delete
+flat
+flat -1
+flat 0
+open_with 
+set show_hidden true
+rename scoper.sh
+make all
+cd .
+terminal 
+open_with unzip
+chmod 700
+search irss
+search code
+search ruby
+rename members_2017.03.06.csv
