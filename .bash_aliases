@@ -97,6 +97,11 @@ alias tmn="tmux new -s"
 alias handbrake="ghb %f"
 alias docs="zeal"
 
+alias bigdirs="find_big_directories"
+find_big_directories() {
+  sudo du -chax --max-depth=1 "${1:-/}" | command grep -E "^[0-9\.]*[MG]"
+}
+
 cpufreq_watch() {
   while true :
   do
