@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+SCREENSHOT_PATH=$HOME/Pictures/Screenshots/
+
+case "$1" in
+  selection)
+    scrot -s $SCREENSHOT_PATH`date +%Y-%m-%d_%H:%M:%S`.png \
+      && xclip -selection clipboard -t image/png -i $_ \
+      && notify-send -i $_ "Selection Screenshot Saved" "$_"
+    ;;
+  window)
+    scrot -u $SCREENSHOT_PATH`date +%Y-%m-%d_%H:%M:%S`.png \
+      && xclip -selection clipboard -t image/png -i $_ \
+      && notify-send -i $_ "Window Screenshot Saved" "$_"
+    ;;
+  fullscreen)
+    scrot $SCREENSHOT_PATH`date +%Y-%m-%d_%H:%M:%S`.png \
+      && xclip -selection clipboard -t image/png -i $_ \
+      && notify-send -i $_ "Fullscreen Screenshot Saved" "$_"
+    ;;
+  *)
+    echo $"Usage: $(basename $0) {selection|window|fullscreen}"
+    echo $"Detail: $(basename $0) takes a screenshot, copies it to the clipboard, and saves it in $SCREENSHOT_PATH with a date.png filename."
+    exit 1
+esac
+
